@@ -25,3 +25,6 @@ hs_err_pid*
 
 #boto config
 boto.cfg
+
+#local values files
+myvalues.yaml

@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ .Release.Name}}-botosecret
+type: Opaque
+stringData:
+  platypus_boto.cfg: |
+    [Boto]
+    http_socket_timeout = {{ .Values.botoconfig.http_socket_timeout}}
+    ec2_region_name = {{ .Values.botoconfig.ec2_region_name}}
+    ec2_region_endpoint = {{ .Values.botoconfig.ec2_region_endpoint}}
+    region = {{ .Values.botoconfig.region}}
+
+    [Credentials]
+    aws_access_key_id={{ .Values.botoconfig.aws_access_key_id}}
+    aws_secret_access_key={{ .Values.botoconfig.aws_secret_access_key}}
+    region = {{ .Values.botoconfig.region}}
+
+    [default]
+    aws_access_key_id={{ .Values.botoconfig.aws_access_key_id}}
+    aws_secret_access_key={{ .Values.botoconfig.aws_secret_access_key}}
+    region = {{ .Values.botoconfig.region}}

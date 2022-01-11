@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name}}-configmap
+data:
+  config.yaml: |
+    nodeName: {{ .Values.config.nodeName }}
+    hostName: {{ .Values.config.hostName }}
+    port: {{ .Values.config.port }}
+    replicationPort: {{ .Values.config.replicationPort }}
+    stateDir: {{ .Values.config.stateDir }}
+    indexDir:  {{ .Values.config.indexDir }}
+    botoCfgPath: {{ .Values.config.botoCfgPath }}
+    bucketName: {{  .Values.config.bucketName }}
+    archiveDirectory: {{  .Values.config.archiveDirectory }}
+    serviceName: {{  .Values.config.serviceName }}
+    restoreState: {{ .Values.config.restoreState}}
+    restoreFromIncArchiver: {{ .Values.config.restoreFromIncArchiver }}
+    backupWithIncArchiver: {{ .Values.config.backupWithIncArchiver }}
+    downloadAsStream: {{ .Values.config.downloadAsStream}}
