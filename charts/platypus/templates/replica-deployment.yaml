@@ -1,0 +1,88 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "platypus.fullname" . }}-replica
+  labels:
+    {{- include "platypus.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "platypus.selectorLabels" . | nindent 6 }}
+      nodetype: replica
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "platypus.selectorLabels" . | nindent 8 }}
+        nodetype: replica
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "platypus.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          volumeMounts:
+            - name: config
+              mountPath: "/user/app/config"
+              readOnly: true
+            - name: botoconfig
+              mountPath: "/user/app/botoconfig/"
+              readOnly: true
+          ports:
+            - name: serverport
+              containerPort: {{ .Values.config.port }}
+              protocol: TCP
+            - name: replicationport
+              containerPort: {{ .Values.config.replicationPort }}
+              protocol: TCP
+
+{{/*          livenessProbe:*/}}
+{{/*            httpGet:*/}}
+{{/*              path: /*/}}
+{{/*              port: http*/}}
+{{/*          readinessProbe:*/}}
+{{/*            httpGet:*/}}
+{{/*              path: /*/}}
+{{/*              port: http*/}}
+          command: ["/user/app/build/install/nrtsearch/bin/lucene-server"]
+          args: ["/user/app/config/config.yaml"]
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      volumes:
+        # You set volumes at the Pod level, then mount them into containers inside that Pod
+        - name: config
+          configMap:
+            # Provide the name of the ConfigMap you want to mount.
+            name: {{ .Release.Name}}-configmap
+            items:
+              - key: "config.yaml"
+                path: "config.yaml"
+        - name: botoconfig
+          secret:
+            secretName: {{ .Release.Name}}-botosecret
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

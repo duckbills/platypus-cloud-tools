@@ -1,15 +1,16 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "platypus.fullname" . }}
+  name: {{ include "platypus.fullname" . }}-replica
   labels:
     {{- include "platypus.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.service.type }}
   ports:
-    - port: {{ .Values.service.port }}
-      targetPort: {{ .Values.config.port }}
+    - port: {{ .Values.service.replica.port }}
+      targetPort: serverport
       protocol: TCP
       name: luceneserver
   selector:
     {{- include "platypus.selectorLabels" . | nindent 4 }}
+    nodetype: replica

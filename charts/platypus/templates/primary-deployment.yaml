@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "platypus.fullname" . }}
+  name: {{ include "platypus.fullname" . }}-primary
   labels:
     {{- include "platypus.labels" . | nindent 4 }}
 spec:
@@ -11,6 +11,7 @@ spec:
   selector:
     matchLabels:
       {{- include "platypus.selectorLabels" . | nindent 6 }}
+      nodetype: primary
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -19,6 +20,7 @@ spec:
       {{- end }}
       labels:
         {{- include "platypus.selectorLabels" . | nindent 8 }}
+        nodetype: primary
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
