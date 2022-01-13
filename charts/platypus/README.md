@@ -65,7 +65,6 @@ For example, in the output below, the value under the `EXTERNAL-IP` column is 19
    $ kubectl get services
   
    NAME                 TYPE           CLUSTER-IP      EXTERNAL-IP       PORT(S)                          AGE
-   platypus-client   LoadBalancer   10.99.227.180   8.8.8.8           31010:32260/TCP,9047:30620/TCP   2d
    myplatypus-primary   LoadBalancer   10.105.39.12    192.168.49.11   8900:31006/TCP   2m25s
    myplatypus-replica   LoadBalancer   10.99.173.172   192.168.49.10   9900:30003/TCP   2m25s
 
