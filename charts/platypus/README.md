@@ -14,7 +14,6 @@ You can follow these instructions to install platypus in a Kubernetes cluster pr
 1. Download [the `platypus-cloud-tools` repository](https://github.com/duckbills/platypus-cloud-tools).
 1. In a terminal window, change to the `platypus-cloud-tools/charts/platypus/` directory.
 1. Review the default values in the file `values.yaml`, which configures the platypus installation. If you want to override any of these values, create a file with the `.yaml` extension in this directory, copy into this file the keys for which you want to set non-default values, and then set the values in the file. Making changes in this file allows you to quickly update to the latest version of the chart by copying the file across Helm chart updates. Refer to "[`values.yaml` Reference](./docs/Values-Reference.md)" for details about the settings.
-1. Review the document "[Important Setup Considerations](./docs/setup/Important-Setup-Considerations.md)" and make any of the listed changes to the values in your `values.local.yaml` file that you think are necessary for your environment.
 1. Install the Helm Chart by running one of these commands from the `charts` directory:
    * If you are overriding any of the default values that are in the `values.yaml` file, run this command:
 
